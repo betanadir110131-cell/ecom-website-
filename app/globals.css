@@ -1,0 +1,243 @@
+@import "tailwindcss";
+
+/* Color Theme Variables */
+:root {
+  /* Main Colors */
+  --color-primary: #111827; /* gray-900 */
+  --color-secondary: #a78bfa; /* violet-400 */
+  --color-accent: #3b82f6; /* blue-500 */
+  
+  /* Text Colors */
+  --color-text-primary: #d1d5db; /* gray-300 */
+  --color-text-secondary: #9ca3af; /* gray-400 */
+  --color-text-dark: #374151; /* gray-700 */
+  
+  /* Background Colors */
+  --color-bg-primary: #111827; /* gray-900 */
+  --color-bg-secondary: #1f2937; /* gray-800 */
+  --color-bg-light: #f9fafb; /* gray-50 */
+  
+  /* Border Colors */
+  --color-border-primary: #374151; /* gray-700 */
+  --color-border-secondary: #4b5563; /* gray-600 */
+}
+
+/* Custom Theme Classes */
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.bg-secondary {
+  background-color: var(--color-secondary);
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.border-primary {
+  border-color: var(--color-border-primary);
+}
+
+/* Animation Keyframes */
+@keyframes kenburns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.15) translate(-2%, 2%);
+  }
+  100% {
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Animation Classes */
+.animate-kenburns {
+  animation: kenburns 20s ease-in-out infinite;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s both ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.6s both ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s both ease-out;
+}
+
+.animation-delay-100 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-500 {
+  animation-delay: 0.5s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-700 {
+  animation-delay: 0.7s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+.animation-delay-900 {
+  animation-delay: 0.9s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(167, 139, 250, 0.3);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-secondary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-secondary);
+}
+
+/* Selection Styles */
+::selection {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+/* Focus Styles */
+.focus-outline:focus {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .animate-kenburns,
+  .animate-fade-up,
+  .animate-slide-in-right,
+  .animate-slide-in-left,
+  .animate-bounce {
+    animation: none !important;
+  }
+  
+  .transition-all,
+  .transition-transform,
+  .transition-opacity,
+  .transition-colors {
+    transition: none !important;
+  }
+  
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
+/* Dark mode support (if needed) */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .mobile-optimize {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}
