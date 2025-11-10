@@ -31,7 +31,22 @@ export interface FilterOption {
   name: string;
   options: string[];
 }
-
+export interface Testimonial {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string;
+  content: string;
+  rating: number;
+  date?: string;
+}
+export interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  productCount: number;
+  description?: string;
+}
 export const allProducts: Product[] = [
   {
     id: "1",

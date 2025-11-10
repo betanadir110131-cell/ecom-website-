@@ -1,4 +1,4 @@
-import { Product, Category, Testimonial } from '@/app/types';
+import { Product, Category, Testimonial } from '@/components/data/products.ts';
 
 export const PRODUCTS: Product[] = [
   { id: "1", name: "Gaming Laptop Pro", price: 1299.99, originalPrice: 1499.99, image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400", category: "Laptops" },
