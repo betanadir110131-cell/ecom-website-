@@ -1,4 +1,4 @@
-import { Product, Category, Testimonial } from '@/components/data/products.ts';
+import { Product, Category } from '../../components/data/products.ts';
 
 export const PRODUCTS: Product[] = [
   { id: "1", name: "Gaming Laptop Pro", price: 1299.99, originalPrice: 1499.99, image: "https://images.unsplash.com/photo-1593642632823-8f785ba67e45?w=400", category: "Laptops" },
@@ -14,21 +14,3 @@ export const CATEGORIES: Category[] = [
   { id: "4", name: "Tablets", icon: "📟", productCount: 15 },
 ];
 
-export const TESTIMONIALS = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    role: "Tech Enthusiast",
-    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=100",
-    content: "Amazing products and lightning-fast delivery! The customer service team went above and beyond.",
-    rating: 5,
-  },
-  {
-    id: "2",
-    name: "Michael Chen",
-    role: "Gaming Professional",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
-    content: "Best gaming gear store! Competitive prices and genuine products. Highly recommended!",
-    rating: 5,
-  },
-];

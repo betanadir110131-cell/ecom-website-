@@ -32,14 +32,14 @@ export interface FilterOption {
   options: string[];
 }
 export interface Testimonial {
-  id: string;
+ id: string;
   name: string;
-  role: string;
-  avatar: string;
-  content: string;
+  feedback: string;
   rating: number;
-  date?: string;
+  avatar?: string;
+  location?: string;
 }
+ 
 export interface Category {
   id: string;
   name: string;

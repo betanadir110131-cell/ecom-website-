@@ -3,15 +3,9 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote } from "lucide-react";
+import { Testimonial } from "@/components/data/products";
 
-interface Testimonial {
-  id: string;
-  name: string;
-  feedback: string;
-  rating: number;
-  avatar?: string;
-  location?: string;
-}
+
 const TESTIMONIALS: Testimonial[] = [
   {
     id: "1",
