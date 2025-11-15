@@ -85,7 +85,7 @@ export interface CartItem {
 }
 
 export const allProducts: Product[] = [
-   {
+  {
     id: "wireless-bluetooth-headphones",
     name: "Wireless Bluetooth Headphones",
     price: 79.99,
@@ -117,6 +117,7 @@ export const allProducts: Product[] = [
     },
     stock: 25,
     unitsSold: 450,
+    isNew: true,
     isBestSeller: true,
     salesRank: 1,
     createdAt: "2024-01-15"
@@ -153,6 +154,7 @@ export const allProducts: Product[] = [
     },
     stock: 42,
     unitsSold: 320,
+    isNew: true,
     isBestSeller: true,
     salesRank: 2,
     createdAt: "2024-02-10"
@@ -189,6 +191,7 @@ export const allProducts: Product[] = [
     },
     stock: 15,
     unitsSold: 180,
+    isNew: false,
     isBestSeller: false,
     salesRank: 5,
     createdAt: "2024-03-05"
@@ -225,6 +228,7 @@ export const allProducts: Product[] = [
     },
     stock: 67,
     unitsSold: 520,
+    isNew: false,
     isBestSeller: true,
     salesRank: 3,
     createdAt: "2024-01-28"
@@ -261,6 +265,7 @@ export const allProducts: Product[] = [
     },
     stock: 38,
     unitsSold: 290,
+    isNew: true,
     isBestSeller: false,
     salesRank: 8,
     createdAt: "2024-02-22"
@@ -297,6 +302,7 @@ export const allProducts: Product[] = [
     },
     stock: 22,
     unitsSold: 150,
+    isNew: false,
     isBestSeller: false,
     salesRank: 12,
     createdAt: "2024-03-12"
@@ -333,6 +339,7 @@ export const allProducts: Product[] = [
     },
     stock: 120,
     unitsSold: 890,
+    isNew: false,
     isBestSeller: true,
     salesRank: 4,
     createdAt: "2024-01-08"
@@ -369,6 +376,7 @@ export const allProducts: Product[] = [
     },
     stock: 55,
     unitsSold: 420,
+    isNew: false,
     isBestSeller: false,
     salesRank: 9,
     createdAt: "2024-02-18"
@@ -405,6 +413,7 @@ export const allProducts: Product[] = [
     },
     stock: 33,
     unitsSold: 380,
+    isNew: true,
     isBestSeller: true,
     salesRank: 6,
     createdAt: "2024-01-25"
@@ -441,6 +450,7 @@ export const allProducts: Product[] = [
     },
     stock: 28,
     unitsSold: 210,
+    isNew: false,
     isBestSeller: false,
     salesRank: 15,
     createdAt: "2024-03-08"
@@ -477,6 +487,7 @@ export const allProducts: Product[] = [
     },
     stock: 41,
     unitsSold: 270,
+    isNew: false,
     isBestSeller: true,
     salesRank: 7,
     createdAt: "2024-02-14"
@@ -513,11 +524,30 @@ export const allProducts: Product[] = [
     },
     stock: 85,
     unitsSold: 680,
+    isNew: false,
     isBestSeller: true,
     salesRank: 10,
     createdAt: "2024-01-05"
   }
 ];
+
+// Fixed getRelatedProducts function
+export const getRelatedProducts = (productId: string, limit: number = 4): Product[] => {
+  const product = getProductById(productId);
+  if (!product) return [];
+  
+  return allProducts
+    .filter(p => 
+      p.id !== productId && 
+      p.category === product.category
+    )
+    .slice(0, limit);
+};
+
+// Fixed getProductById function
+export const getProductById = (id: string): Product | undefined => {
+  return allProducts.find(product => product.id === id);
+};
 
 // Utility functions to get specific product lists
 export const getBestSellers = (): Product[] => {
@@ -567,25 +597,10 @@ export const getMostReviewedProducts = (limit: number = 6): Product[] => {
 };
 
 export const getDiscountedProducts = (): Product[] => {
-  return getOnSaleProducts(); // Alias for consistency
+  return getOnSaleProducts();
 };
 
-// Helper function to get product by ID
-export const getProductById = (id: string): Product | undefined => {
-  return allProducts.find(product => product.id === id);
-};
-
-// Helper function to get related products
-export const getRelatedProducts = (currentProduct: Product, limit: number = 4): Product[] => {
-  return allProducts
-    .filter(product => 
-      product.id !== currentProduct.id && 
-      product.category === currentProduct.category
-    )
-    .slice(0, limit);
-};
-
-// Helper function to search products
+// Search functions
 export const searchProducts = (query: string): Product[] => {
   const searchTerm = query.toLowerCase();
   return allProducts.filter(product =>
@@ -596,73 +611,6 @@ export const searchProducts = (query: string): Product[] => {
   );
 };
 
-// Helper function to get all products
-export const getAllProducts = (): Product[] => {
-  return allProducts;
-};
-
-// Helper function to get categories
-export const getCategories = (): string[] => {
-  const categories = allProducts.map(product => product.category).filter(Boolean) as string[];
-  return Array.from(new Set(categories));
-};
-
-// Helper function to convert Product to CartItem
-export const productToCartItem = (product: Product, quantity: number = 1): CartItem => {
-  return {
-    id: `${product.id}-${Date.now()}`,
-    productId: product.id,
-    name: product.name,
-    price: product.price,
-    quantity: quantity,
-    image: product.image
-  };
-};
-
-// Helper function to get cart items from product IDs
-export const getCartItemsFromProducts = (productIds: string[]): CartItem[] => {
-  return productIds.map(productId => {
-    const product = getProductById(productId);
-    if (!product) throw new Error(`Product with ID ${productId} not found`);
-    return productToCartItem(product);
-  });
-};
-
-// Collections data
-export const collections: Collection[] = [
-  // ... your existing collections data
-];
-
-// Helper function to get collection by ID
-export const getCollectionById = (id: string): Collection | undefined => {
-  return collections.find(collection => collection.id === id);
-};
-
-// Helper function to get all collections
-export const getAllCollections = (): Collection[] => {
-  return collections;
-};
-
-// Categories data
-export const categories: Category[] = [
-  // ... your existing categories data
-];
-
-// Testimonials data
-export const testimonials: Testimonial[] = [
-  // ... your existing testimonials data
-];
-
-// Sample user data
-export const sampleUser: User = {
-  id: "1",
-  name: "John Doe",
-  email: "john.doe@example.com",
-  avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face",
-  role: "customer"
-};
-
-// FIXED: Single getSearchSuggestions function (removed duplicate)
 export const getSearchSuggestions = (query: string, limit: number = 5): SearchResult[] => {
   if (!query.trim()) return [];
   
@@ -718,24 +666,6 @@ export const getSearchSuggestions = (query: string, limit: number = 5): SearchRe
     results.push(...tagMatches);
   }
   
-  // Search in descriptions (lowest priority)
-  if (results.length < limit) {
-    const descriptionMatches = allProducts
-      .filter(product => 
-        product.description?.toLowerCase().includes(searchTerm) && 
-        !results.some(r => r.id === product.id)
-      )
-      .map(product => ({
-        id: product.id,
-        name: product.name,
-        category: product.category || 'Uncategorized',
-        price: product.price,
-        image: product.image
-      }));
-    
-    results.push(...descriptionMatches);
-  }
-  
   // Remove duplicates and return limited results
   const uniqueResults = results.filter((result, index, self) => 
     index === self.findIndex(r => r.id === result.id)
@@ -744,16 +674,13 @@ export const getSearchSuggestions = (query: string, limit: number = 5): SearchRe
   return uniqueResults.slice(0, limit);
 };
 
-// Get featured search results (popular searches, trending products)
 export const getFeaturedSearchResults = (limit: number = 6): SearchResult[] => {
-  // Combine best sellers, new arrivals, and top rated products
   const featuredProducts = [
     ...getBestSellers().slice(0, 3),
     ...getNewArrivals().slice(0, 2),
     ...getTopRatedProducts(2)
   ];
   
-  // Remove duplicates
   const uniqueProducts = featuredProducts.filter((product, index, self) => 
     index === self.findIndex(p => p.id === product.id)
   );
@@ -767,279 +694,198 @@ export const getFeaturedSearchResults = (limit: number = 6): SearchResult[] => {
   }));
 };
 
-// Get popular search terms
-export const getPopularSearchTerms = (): string[] => {
-  return [
-    "wireless headphones",
-    "smart watch",
-    "gaming keyboard",
-    "yoga mat",
-    "water bottle",
-    "fitness tracker",
-    "bluetooth earbuds",
-    "laptop backpack"
-  ];
-};
-
-// Get search results with categories and filters
-export const getAdvancedSearchResults = (query: string, filters?: {
-  category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  minRating?: number;
-}): Product[] => {
-  let results = searchProducts(query);
-  
-  // Apply category filter
-  if (filters?.category) {
-    results = results.filter(product => product.category === filters.category);
-  }
-  
-  // Apply price range filter
-  if (filters?.minPrice !== undefined) {
-    results = results.filter(product => product.price >= filters.minPrice!);
-  }
-  
-  if (filters?.maxPrice !== undefined) {
-    results = results.filter(product => product.price <= filters.maxPrice!);
-  }
-  
-  // Apply rating filter
-  if (filters?.minRating !== undefined) {
-    results = results.filter(product => (product.rating || 0) >= filters.minRating!);
-  }
-  
-  return results;
-};
-
-// Get search history (mock function - in real app this would come from localStorage/DB)
-export const getSearchHistory = (): string[] => {
-  // This would typically come from user's local storage or database
-  return [
-    "wireless headphones",
-    "gaming keyboard",
-    "smart watch"
-  ];
-};
-
-// Add search result to history (mock function)
-export const addToSearchHistory = (query: string): void => {
-  // In a real app, this would save to localStorage or send to backend
-  console.log(`Added to search history: ${query}`);
-};
-
-// Clear search history (mock function)
-export const clearSearchHistory = (): void => {
-  // In a real app, this would clear from localStorage or backend
-  console.log('Search history cleared');
-};
-
-// Get search results with highlighting information
-export const getSearchResultsWithHighlights = (query: string): Array<Product & { highlights: string[] }> => {
-  const results = searchProducts(query);
-  
-  return results.map(product => {
-    const highlights: string[] = [];
-    const searchTerm = query.toLowerCase();
-    
-    // Check name for matches
-    if (product.name.toLowerCase().includes(searchTerm)) {
-      highlights.push(`Name: ${product.name}`);
-    }
-    
-    // Check category for matches
-    if (product.category?.toLowerCase().includes(searchTerm)) {
-      highlights.push(`Category: ${product.category}`);
-    }
-    
-    // Check description for matches
-    if (product.description?.toLowerCase().includes(searchTerm)) {
-      // Extract the sentence containing the search term
-      const sentences = product.description.split('. ');
-      const matchingSentence = sentences.find(sentence => 
-        sentence.toLowerCase().includes(searchTerm)
-      );
-      if (matchingSentence) {
-        highlights.push(`Description: ${matchingSentence}`);
+// Collections data
+export const collections: Collection[] = [
+  {
+    id: "new-arrivals",
+    name: "New Arrivals",
+    description: "Check out our latest tech products and innovations",
+    products: getNewArrivals(),
+    filters: [
+      {
+        id: "category",
+        name: "Category",
+        options: ["audio", "wearables", "accessories"]
+      },
+      {
+        id: "price",
+        name: "Price Range",
+        options: ["Under $50", "$50-$100", "$100-$200", "Above $200"]
       }
-    }
-    
-    // Check tags for matches
-    const matchingTags = product.tags?.filter(tag => 
-      tag.toLowerCase().includes(searchTerm)
-    ) || [];
-    
-    if (matchingTags.length > 0) {
-      highlights.push(`Tags: ${matchingTags.join(', ')}`);
-    }
-    
-    return {
-      ...product,
-      highlights: highlights.slice(0, 3) // Limit to 3 highlights
-    };
-  });
-};
-
-// Get search analytics (popular categories for search)
-export const getSearchAnalytics = (): Array<{ category: string; count: number }> => {
-  const categoryCounts: Record<string, number> = {};
-  
-  allProducts.forEach(product => {
-    if (product.category) {
-      categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
-    }
-  });
-  
-  return Object.entries(categoryCounts)
-    .map(([category, count]) => ({ category, count }))
-    .sort((a, b) => b.count - a.count);
-};
-
-// Get trending searches (based on product popularity and recency)
-export const getTrendingSearches = (): Array<{ term: string; score: number }> => {
-  const trendingProducts = [
-    ...getBestSellers(),
-    ...getNewArrivals(),
-    ...getTopRatedProducts()
-  ];
-  
-  const searchTerms: Record<string, number> = {};
-  
-  trendingProducts.forEach(product => {
-    // Use product name as a search term
-    const term = product.name.toLowerCase();
-    searchTerms[term] = (searchTerms[term] || 0) + 1;
-    
-    // Also add category as a search term
-    if (product.category) {
-      searchTerms[product.category] = (searchTerms[product.category] || 0) + 1;
-    }
-    
-    // Add tags as search terms
-    product.tags?.forEach(tag => {
-      searchTerms[tag] = (searchTerms[tag] || 0) + 1;
-    });
-  });
-  
-  return Object.entries(searchTerms)
-    .map(([term, score]) => ({ term, score }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 10);
-};
-
-// Enhanced search with ranking by relevance
-export const getRankedSearchResults = (query: string): Array<Product & { relevanceScore: number }> => {
-  if (!query.trim()) return [];
-  
-  const searchTerm = query.toLowerCase();
-  const scoredResults: Array<Product & { relevanceScore: number }> = [];
-  
-  allProducts.forEach(product => {
-    let score = 0;
-    
-    // Name matches (highest weight)
-    const nameMatch = product.name.toLowerCase().includes(searchTerm);
-    if (nameMatch) {
-      score += 100;
-      // Exact name match bonus
-      if (product.name.toLowerCase() === searchTerm) {
-        score += 50;
+    ]
+  },
+  {
+    id: "best-sellers",
+    name: "Best Sellers",
+    description: "Our most popular products loved by customers",
+    products: getBestSellers(),
+    filters: [
+      {
+        id: "category",
+        name: "Category",
+        options: ["audio", "wearables", "computers", "accessories"]
+      },
+      {
+        id: "rating",
+        name: "Rating",
+        options: ["4+ Stars", "4.5+ Stars"]
       }
-    }
-    
-    // Category matches
-    if (product.category?.toLowerCase().includes(searchTerm)) {
-      score += 75;
-    }
-    
-    // Tag matches
-    const tagMatches = product.tags?.filter(tag => 
-      tag.toLowerCase().includes(searchTerm)
-    ).length || 0;
-    score += tagMatches * 25;
-    
-    // Description matches
-    if (product.description?.toLowerCase().includes(searchTerm)) {
-      score += 10;
-    }
-    
-    // Boost popular products
-    if (product.isBestSeller) score += 20;
-    if (product.isNew) score += 15;
-    if (product.rating && product.rating >= 4.5) score += 10;
-    
-    if (score > 0) {
-      scoredResults.push({
-        ...product,
-        relevanceScore: score
-      });
-    }
-  });
-  
-  return scoredResults.sort((a, b) => b.relevanceScore - a.relevanceScore);
-};
-
-// Quick search suggestions (just product names and categories)
-export const getQuickSearchSuggestions = (query: string): string[] => {
-  if (!query.trim()) return [];
-  
-  const searchTerm = query.toLowerCase();
-  const suggestions = new Set<string>();
-  
-  // Add product names
-  allProducts.forEach(product => {
-    if (product.name.toLowerCase().includes(searchTerm)) {
-      suggestions.add(product.name);
-    }
-  });
-  
-  // Add categories
-  allProducts.forEach(product => {
-    if (product.category?.toLowerCase().includes(searchTerm)) {
-      suggestions.add(product.category);
-    }
-  });
-  
-  // Add tags
-  allProducts.forEach(product => {
-    product.tags?.forEach(tag => {
-      if (tag.toLowerCase().includes(searchTerm)) {
-        suggestions.add(tag);
+    ]
+  },
+  {
+    id: "gaming-gear",
+    name: "Gaming Gear",
+    description: "High-performance equipment for gamers",
+    products: allProducts.filter(product => 
+      product.tags?.includes("gaming") || 
+      product.category === "computers"
+    ),
+    filters: [
+      {
+        id: "type",
+        name: "Product Type",
+        options: ["Keyboards", "Mice", "Headsets", "Laptops"]
+      },
+      {
+        id: "price",
+        name: "Price Range",
+        options: ["Under $100", "$100-$300", "Above $300"]
       }
-    });
-  });
-  
-  return Array.from(suggestions).slice(0, 8);
+    ]
+  }
+];
+
+// Categories data
+export const categories: Category[] = [
+  {
+    id: "audio",
+    name: "Audio",
+    icon: "🎧",
+    productCount: allProducts.filter(p => p.category === "audio").length,
+    description: "Headphones, earbuds, and audio accessories"
+  },
+  {
+    id: "wearables",
+    name: "Wearables",
+    icon: "⌚",
+    productCount: allProducts.filter(p => p.category === "wearables").length,
+    description: "Smartwatches and fitness trackers"
+  },
+  {
+    id: "computers",
+    name: "Computers",
+    icon: "💻",
+    productCount: allProducts.filter(p => p.category === "computers").length,
+    description: "Laptops, desktops, and computer accessories"
+  },
+  {
+    id: "accessories",
+    name: "Accessories",
+    icon: "🖱️",
+    productCount: allProducts.filter(p => p.category === "accessories").length,
+    description: "Keyboards, mice, chargers, and more"
+  },
+  {
+    id: "storage",
+    name: "Storage",
+    icon: "💾",
+    productCount: allProducts.filter(p => p.category === "storage").length,
+    description: "SSDs, external drives, and storage solutions"
+  },
+  {
+    id: "monitors",
+    name: "Monitors",
+    icon: "🖥️",
+    productCount: allProducts.filter(p => p.category === "monitors").length,
+    description: "Computer monitors and displays"
+  },
+  {
+    id: "camera",
+    name: "Camera",
+    icon: "📷",
+    productCount: allProducts.filter(p => p.category === "camera").length,
+    description: "Camera equipment and accessories"
+  }
+];
+
+// Testimonials data
+export const testimonials: Testimonial[] = [
+  {
+    id: "1",
+    name: "Sarah Johnson",
+    feedback: "The wireless headphones are amazing! The noise cancellation works perfectly and the battery life is incredible.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face",
+    location: "New York, USA"
+  },
+  {
+    id: "2",
+    name: "Mike Chen",
+    feedback: "Best gaming laptop I've ever owned. The RTX 4070 handles everything I throw at it with ease.",
+    rating: 5,
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    location: "San Francisco, USA"
+  },
+  {
+    id: "3",
+    name: "Emily Davis",
+    feedback: "The smartwatch has completely changed how I track my fitness. The health monitoring features are spot on!",
+    rating: 4,
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+    location: "London, UK"
+  }
+];
+
+// Sample user data
+export const sampleUser: User = {
+  id: "1",
+  name: "John Doe",
+  email: "john.doe@example.com",
+  avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&h=100&fit=crop&crop=face",
+  role: "customer"
 };
 
-// Test function to verify search functions work
-export const testSearchFunctions = () => {
-  console.log('=== Testing Search Functions ===');
-  
-  // Test getSearchSuggestions
-  const testQueries = ['wireless', 'gaming', 'smart', 'watch'];
-  testQueries.forEach(query => {
-    console.log(`\nSearch suggestions for "${query}":`);
-    const suggestions = getSearchSuggestions(query);
-    suggestions.forEach(suggestion => {
-      console.log(`- ${suggestion.name} (${suggestion.category}) - $${suggestion.price}`);
-    });
-  });
-  
-  // Test getFeaturedSearchResults
-  console.log('\n=== Featured Search Results ===');
-  const featured = getFeaturedSearchResults();
-  featured.forEach(result => {
-    console.log(`- ${result.name} - $${result.price}`);
-  });
-  
-  // Test getPopularSearchTerms
-  console.log('\n=== Popular Search Terms ===');
-  const popularTerms = getPopularSearchTerms();
-  popularTerms.forEach(term => console.log(`- ${term}`));
+// Cart utility functions
+export const productToCartItem = (product: Product, quantity: number = 1): CartItem => {
+  return {
+    id: `${product.id}-${Date.now()}`,
+    productId: product.id,
+    name: product.name,
+    price: product.price,
+    quantity: quantity,
+    image: product.image
+  };
 };
 
-// Export all functions
+export const getCartItemsFromProducts = (productIds: string[]): CartItem[] => {
+  return productIds.map(productId => {
+    const product = getProductById(productId);
+    if (!product) throw new Error(`Product with ID ${productId} not found`);
+    return productToCartItem(product);
+  });
+};
+
+// Collection helper functions
+export const getCollectionById = (id: string): Collection | undefined => {
+  return collections.find(collection => collection.id === id);
+};
+
+export const getAllCollections = (): Collection[] => {
+  return collections;
+};
+
+// Category helper function
+export const getCategories = (): string[] => {
+  const categories = allProducts.map(product => product.category).filter(Boolean) as string[];
+  return Array.from(new Set(categories));
+};
+
+// Get all products
+export const getAllProducts = (): Product[] => {
+  return allProducts;
+};
+
+// Export all functions and data
 export default {
   // Products
   allProducts,
@@ -1059,16 +905,6 @@ export default {
   searchProducts,
   getSearchSuggestions,
   getFeaturedSearchResults,
-  getPopularSearchTerms,
-  getAdvancedSearchResults,
-  getSearchHistory,
-  addToSearchHistory,
-  clearSearchHistory,
-  getSearchResultsWithHighlights,
-  getSearchAnalytics,
-  getTrendingSearches,
-  getRankedSearchResults,
-  getQuickSearchSuggestions,
   
   // Collections
   collections,
@@ -1087,8 +923,5 @@ export default {
   
   // Cart
   productToCartItem,
-  getCartItemsFromProducts,
-  
-  // Testing
-  testSearchFunctions
+  getCartItemsFromProducts
 };

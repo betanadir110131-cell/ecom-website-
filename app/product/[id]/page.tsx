@@ -5,22 +5,22 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProductById, getRelatedProducts, Product } from '@/components/data_products/products';
+import { getProductById, getRelatedProducts, allProducts } from '@/components/data_products/products';
 import { useCart } from '@/contexts/CartContext';
 import { useWishlist } from '@/contexts/WishlistContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
   ArrowLeft, ShoppingCart, Heart, Share2, 
   Star, Truck, Shield, RefreshCw, Check,
-  Plus, Minus, Facebook, Twitter, Instagram
+  Plus, Minus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ProductPage() {
   const params = useParams();
   const router = useRouter();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [product, setProduct] = useState<any>(null);
+  const [relatedProducts, setRelatedProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
@@ -34,14 +34,14 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 500));
       
       const productId = params.id as string;
       const foundProduct = getProductById(productId);
       
       if (foundProduct) {
         setProduct(foundProduct);
-        const related = getRelatedProducts(foundProduct);
+        const related = getRelatedProducts(productId);
         setRelatedProducts(related);
       }
       
@@ -61,7 +61,6 @@ export default function ProductPage() {
 
     setIsAddingToCart(true);
     
-    // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 800));
     
     for (let i = 0; i < quantity; i++) {
@@ -132,6 +131,15 @@ export default function ProductPage() {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
+  // Color palette
+  const colors = {
+    primary: '#31694E',
+    secondary: '#658C58',
+    accent: '#BBC863',
+    highlight: '#F0E491',
+    background: '#FFFFFF'
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
@@ -140,7 +148,8 @@ export default function ProductPage() {
           <div className="flex items-center justify-between">
             <Link 
               href="/shop"
-              className="inline-flex items-center text-[#31694E] hover:text-[#658C58] transition-colors"
+              className="inline-flex items-center transition-colors"
+              style={{ color: colors.primary }}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Shop
@@ -149,7 +158,7 @@ export default function ProductPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={handleShare}
-                className="p-2 text-gray-600 hover:text-[#31694E] transition-colors"
+                className="p-2 text-gray-600 transition-colors hover:text-gray-900"
               >
                 <Share2 className="w-5 h-5" />
               </button>
@@ -185,19 +194,28 @@ export default function ProductPage() {
               
               {/* Badges */}
               <div className="absolute top-4 left-4 flex flex-col gap-2">
-                {product.isNew && (
-                  <span className="bg-[#31694E] text-white px-3 py-1 rounded-full text-sm font-medium">
-                    New
-                  </span>
-                )}
                 {product.isBestSeller && (
-                  <span className="bg-[#658C58] text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <span 
+                    className="text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+                    style={{ backgroundColor: colors.secondary }}
+                  >
                     Bestseller
                   </span>
                 )}
                 {discountPercent > 0 && (
-                  <span className="bg-[#F0E491] text-gray-900 px-3 py-1 rounded-full text-sm font-medium">
+                  <span 
+                    className="text-gray-900 px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+                    style={{ backgroundColor: colors.highlight }}
+                  >
                     -{discountPercent}% OFF
+                  </span>
+                )}
+                {product.unitsSold > 300 && (
+                  <span 
+                    className="text-white px-3 py-1 rounded-full text-sm font-medium shadow-sm"
+                    style={{ backgroundColor: colors.primary }}
+                  >
+                    Popular
                   </span>
                 )}
               </div>
@@ -206,7 +224,7 @@ export default function ProductPage() {
             {/* Thumbnail Images */}
             {product.images && product.images.length > 1 && (
               <div className="flex gap-2 overflow-x-auto">
-                {product.images.map((image, index) => (
+                {product.images.map((image: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
@@ -233,10 +251,15 @@ export default function ProductPage() {
           <div className="space-y-6">
             {/* Category & Rating */}
             <div className="flex items-center justify-between">
-              <span className="text-[#31694E] font-medium">{product.category}</span>
+              <span 
+                className="font-medium capitalize"
+                style={{ color: colors.primary }}
+              >
+                {product.category}
+              </span>
               {product.rating && (
                 <div className="flex items-center gap-1">
-                  <Star className="w-4 h-4 text-[#F0E491] fill-current" />
+                  <Star className="w-4 h-4" style={{ color: colors.highlight }} fill="currentColor" />
                   <span className="font-medium">{product.rating}</span>
                   <span className="text-gray-500">({product.reviewCount} reviews)</span>
                 </div>
@@ -256,7 +279,10 @@ export default function ProductPage() {
                 <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
               )}
               {discountPercent > 0 && (
-                <span className="bg-[#F0E491] text-gray-900 px-2 py-1 rounded text-sm font-medium">
+                <span 
+                  className="text-gray-900 px-2 py-1 rounded text-sm font-medium"
+                  style={{ backgroundColor: colors.highlight }}
+                >
                   Save {discountPercent}%
                 </span>
               )}
@@ -275,13 +301,32 @@ export default function ProductPage() {
               )}
             </div>
 
+            {/* Tags */}
+            {product.tags && product.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {product.tags.map((tag: string, index: number) => (
+                  <span 
+                    key={index}
+                    className="px-3 py-1 rounded-full text-sm border"
+                    style={{ 
+                      borderColor: colors.accent,
+                      backgroundColor: colors.highlight + '20',
+                      color: colors.primary
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
             {/* Quantity Selector */}
             <div className="flex items-center gap-4">
               <span className="font-medium text-gray-900">Quantity:</span>
               <div className="flex items-center border border-gray-300 rounded-lg">
                 <button
                   onClick={decrementQuantity}
-                  className="p-2 hover:bg-gray-100 transition-colors"
+                  className="p-2 hover:bg-gray-100 transition-colors disabled:opacity-50"
                   disabled={quantity <= 1}
                 >
                   <Minus className="w-4 h-4" />
@@ -289,7 +334,7 @@ export default function ProductPage() {
                 <span className="px-4 py-2 min-w-[60px] text-center font-medium">{quantity}</span>
                 <button
                   onClick={incrementQuantity}
-                  className="p-2 hover:bg-gray-100 transition-colors"
+                  className="p-2 hover:bg-gray-100 transition-colors disabled:opacity-50"
                   disabled={quantity >= product.stock}
                 >
                   <Plus className="w-4 h-4" />
@@ -302,7 +347,17 @@ export default function ProductPage() {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0 || isAddingToCart}
-                className="flex-1 bg-[#31694E] hover:bg-[#658C58] text-white py-4 px-8 rounded-xl font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                className="flex-1 py-4 px-8 rounded-xl font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-sm hover:shadow-md"
+                style={{ 
+                  backgroundColor: colors.primary,
+                  color: colors.background
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.secondary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.primary;
+                }}
               >
                 {isAddingToCart ? (
                   <>
@@ -321,7 +376,22 @@ export default function ProductPage() {
                 )}
               </button>
               
-              <button className="px-8 py-4 border-2 border-[#31694E] text-[#31694E] hover:bg-[#31694E] hover:text-white rounded-xl font-semibold transition-colors">
+              <button 
+                className="px-8 py-4 border-2 rounded-xl font-semibold transition-all shadow-sm hover:shadow-md"
+                style={{ 
+                  borderColor: colors.primary,
+                  color: colors.primary,
+                  backgroundColor: colors.background
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.primary;
+                  e.currentTarget.style.color = colors.background;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = colors.background;
+                  e.currentTarget.style.color = colors.primary;
+                }}
+              >
                 Buy Now
               </button>
             </div>
@@ -329,21 +399,21 @@ export default function ProductPage() {
             {/* Features */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-gray-200">
               <div className="flex items-center gap-3">
-                <Truck className="w-6 h-6 text-[#31694E]" />
+                <Truck className="w-6 h-6" style={{ color: colors.primary }} />
                 <div>
                   <div className="font-medium">Free Shipping</div>
                   <div className="text-sm text-gray-500">Orders over $50</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <Shield className="w-6 h-6 text-[#31694E]" />
+                <Shield className="w-6 h-6" style={{ color: colors.primary }} />
                 <div>
                   <div className="font-medium">2-Year Warranty</div>
                   <div className="text-sm text-gray-500">Full protection</div>
                 </div>
               </div>
               <div className="flex items-center gap-3">
-                <RefreshCw className="w-6 h-6 text-[#31694E]" />
+                <RefreshCw className="w-6 h-6" style={{ color: colors.primary }} />
                 <div>
                   <div className="font-medium">Easy Returns</div>
                   <div className="text-sm text-gray-500">30-day policy</div>
@@ -366,10 +436,10 @@ export default function ProductPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
                     activeTab === tab.id
-                      ? 'border-[#31694E] text-[#31694E]'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                      ? 'text-[#31694E] border-[#31694E]'
+                      : 'text-gray-500 hover:text-gray-700 hover:border-gray-300 border-transparent'
                   }`}
                 >
                   {tab.label}
@@ -393,9 +463,9 @@ export default function ProductPage() {
                   </div>
                 )}
 
-                {activeTab === 'features' && (
+                {activeTab === 'features' && product.features && (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {product.features.map((feature, index) => (
+                    {product.features.map((feature: string, index: number) => (
                       <div key={index} className="flex items-center gap-3">
                         <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
@@ -404,12 +474,12 @@ export default function ProductPage() {
                   </div>
                 )}
 
-                {activeTab === 'specifications' && (
+                {activeTab === 'specifications' && product.specifications && (
                   <div className="max-w-2xl">
                     {Object.entries(product.specifications).map(([key, value]) => (
                       <div key={key} className="flex justify-between py-3 border-b border-gray-200 last:border-b-0">
                         <span className="font-medium text-gray-900">{key}</span>
-                        <span className="text-gray-700">{value}</span>
+                        <span className="text-gray-700">{value as string}</span>
                       </div>
                     ))}
                   </div>
@@ -420,21 +490,39 @@ export default function ProductPage() {
                     {product.rating ? (
                       <div className="text-center py-8">
                         <div className="flex items-center justify-center gap-2 mb-4">
-                          <Star className="w-8 h-8 text-[#F0E491] fill-current" />
+                          <Star className="w-8 h-8" style={{ color: colors.highlight }} fill="currentColor" />
                           <span className="text-3xl font-bold">{product.rating}</span>
                           <span className="text-gray-500">/ 5</span>
                         </div>
                         <p className="text-gray-600 mb-4">
                           Based on {product.reviewCount} customer reviews
                         </p>
-                        <button className="bg-[#31694E] text-white px-6 py-3 rounded-lg hover:bg-[#658C58] transition-colors">
+                        <button 
+                          className="px-6 py-3 rounded-lg text-white font-medium transition-colors shadow-sm hover:shadow-md"
+                          style={{ backgroundColor: colors.primary }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = colors.secondary;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = colors.primary;
+                          }}
+                        >
                           Write a Review
                         </button>
                       </div>
                     ) : (
                       <div className="text-center py-8">
                         <p className="text-gray-600 mb-4">No reviews yet</p>
-                        <button className="bg-[#31694E] text-white px-6 py-3 rounded-lg hover:bg-[#658C58] transition-colors">
+                        <button 
+                          className="px-6 py-3 rounded-lg text-white font-medium transition-colors shadow-sm hover:shadow-md"
+                          style={{ backgroundColor: colors.primary }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = colors.secondary;
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = colors.primary;
+                          }}
+                        >
                           Be the first to review
                         </button>
                       </div>
