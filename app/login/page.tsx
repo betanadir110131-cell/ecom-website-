@@ -1,4 +1,3 @@
-// app/login/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,7 +14,17 @@ export default function SignInPage() {
   
   const router = useRouter();
 
-  // Ensure component is mounted before using router
+  // Color palette
+  const colors = {
+    primary: '#31694E',     // Dark green
+    secondary: '#658C58',   // Medium green
+    accent: '#BBC863',      // Olive green
+    highlight: '#F0E491',   // Light yellow
+    background: '#FFFFFF',
+    textDark: '#1A202C',
+    textLight: '#4A5568',
+  };
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -46,14 +55,10 @@ export default function SignInPage() {
     
     setIsLoading(true);
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
       
-      // Only use router if component is mounted
       if (isMounted) {
         router.push('/');
-        // Alternatively, use window.location for guaranteed client-side navigation
-        // window.location.href = '/';
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -63,28 +68,31 @@ export default function SignInPage() {
     }
   };
 
-  // Safe navigation alternative
-  const handleNavigation = (path: string) => {
-    if (isMounted) {
-      router.push(path);
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8" 
+         style={{ backgroundColor: colors.background }}>
       <div className="max-w-md w-full space-y-8">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Welcome Back</h1>
-          <p className="text-gray-400">Sign in to your account</p>
+          <div className="mx-auto w-16 h-16 rounded-full flex items-center justify-center mb-4 shadow-lg"
+               style={{ backgroundColor: colors.primary }}>
+            <span className="text-2xl font-bold text-white">T</span>
+          </div>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: colors.primary }}>
+            Welcome Back
+          </h1>
+          <p className="text-gray-600">Sign in to your account</p>
         </div>
 
         {/* Sign In Form */}
-        <form className="mt-8 space-y-6 bg-gray-800 p-8 rounded-2xl shadow-2xl" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 p-8 rounded-2xl shadow-lg border" 
+              style={{ borderColor: colors.accent, backgroundColor: colors.background }}
+              onSubmit={handleSubmit}>
           <div className="space-y-4">
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2" 
+                     style={{ color: colors.textDark }}>
                 Email address
               </label>
               <input
@@ -95,12 +103,16 @@ export default function SignInPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="relative block w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                className="relative block w-full px-4 py-3 border rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                style={{ 
+                  borderColor: errors.email ? '#E53E3E' : colors.accent,
+                  backgroundColor: '#F7FAFC'
+                }}
                 placeholder="Enter your email"
                 aria-describedby={errors.email ? "email-error" : undefined}
               />
               {errors.email && (
-                <p id="email-error" className="mt-2 text-sm text-red-400" role="alert">
+                <p id="email-error" className="mt-2 text-sm text-red-600" role="alert">
                   {errors.email}
                 </p>
               )}
@@ -108,7 +120,8 @@ export default function SignInPage() {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" 
+                     style={{ color: colors.textDark }}>
                 Password
               </label>
               <div className="relative">
@@ -120,7 +133,11 @@ export default function SignInPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="relative block w-full px-4 py-3 pr-12 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:border-transparent transition-all"
+                  className="relative block w-full px-4 py-3 pr-12 border rounded-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:border-transparent transition-all"
+                  style={{ 
+                    borderColor: errors.password ? '#E53E3E' : colors.accent,
+                    backgroundColor: '#F7FAFC'
+                  }}
                   placeholder="Enter your password"
                   aria-describedby={errors.password ? "password-error" : undefined}
                 />
@@ -130,13 +147,14 @@ export default function SignInPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
-                  <span className="text-gray-400 hover:text-white transition-colors text-sm">
+                  <span className="text-sm transition-colors" 
+                        style={{ color: colors.textLight }}>
                     {showPassword ? "Hide" : "Show"}
                   </span>
                 </button>
               </div>
               {errors.password && (
-                <p id="password-error" className="mt-2 text-sm text-red-400" role="alert">
+                <p id="password-error" className="mt-2 text-sm text-red-600" role="alert">
                   {errors.password}
                 </p>
               )}
@@ -148,14 +166,21 @@ export default function SignInPage() {
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-violet-500 text-violet-500"
+                className="w-4 h-4 rounded focus:ring-2 border-gray-300"
+                style={{ 
+                  backgroundColor: '#F7FAFC',
+                  borderColor: colors.accent
+                }}
               />
-              <span className="ml-2 text-sm text-gray-300">Remember me</span>
+              <span className="ml-2 text-sm" style={{ color: colors.textDark }}>
+                Remember me
+              </span>
             </label>
 
             <Link 
               href="/forgot-password"
-              className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
+              className="text-sm transition-colors font-medium"
+              style={{ color: colors.primary }}
             >
               Forgot your password?
             </Link>
@@ -165,7 +190,11 @@ export default function SignInPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-violet-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+            className="group relative w-full flex justify-center py-3 px-4 border border-transparent rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-sm hover:shadow-md"
+            style={{ 
+              backgroundColor: isLoading ? colors.secondary : colors.primary,
+              color: colors.background
+            }}
           >
             {isLoading ? (
               <div className="flex items-center">
@@ -179,11 +208,12 @@ export default function SignInPage() {
 
           {/* Sign Up Link */}
           <div className="text-center">
-            <p className="text-gray-400">
+            <p className="text-gray-600">
               Don't have an account?{' '}
               <Link 
-                href="/signup"
-                className="text-violet-400 hover:text-violet-300 transition-colors font-medium"
+                href="/register"
+                className="font-medium transition-colors hover:underline"
+                style={{ color: colors.primary }}
               >
                 Sign up
               </Link>

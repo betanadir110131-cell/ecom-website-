@@ -1,5 +1,9 @@
 import React from 'react';
-import Head from 'next/head';
+
+export const metadata = {
+  title: 'Our Services - TechCommerce',
+  description: 'Explore our comprehensive e-commerce services',
+};
 
 const ServicesPage: React.FC = () => {
   const services = [
@@ -42,12 +46,6 @@ const ServicesPage: React.FC = () => {
   ];
 
   return (
-    <>
-      <Head>
-        <title>Our Services - TechCommerce</title>
-        <meta name="description" content="Explore our comprehensive e-commerce services" />
-      </Head>
-
       <div className="min-h-screen bg-gray-900 text-white">
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-gray-800 to-violet-900 py-20">
@@ -157,7 +155,6 @@ const ServicesPage: React.FC = () => {
           </div>
         </section>
       </div>
-    </>
   );
 };
 

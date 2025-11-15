@@ -3,8 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Quote } from "lucide-react";
-import { Testimonial } from "@/components/data/products";
-
+import { Testimonial } from "@/components/data_products/products";
 
 const TESTIMONIALS: Testimonial[] = [
   {
@@ -94,8 +93,8 @@ export default function Testimonials() {
           key={i}
           className={`w-5 h-5 ${
             i < rating 
-              ? "text-yellow-400 fill-current drop-shadow-sm" 
-              : "text-gray-400"
+              ? "text-[#F0E491] fill-current drop-shadow-sm" 
+              : "text-gray-300"
           }`}
         />
       ))}
@@ -103,7 +102,7 @@ export default function Testimonials() {
   );
 
   return (
-    <section className="py-16 bg-gray-800">
+    <section className="py-16 bg-gray-50">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <motion.div
@@ -113,10 +112,10 @@ export default function Testimonials() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             What Our Customers Say
           </h2>
-          <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Join thousands of satisfied customers who love our premium fashion collection
           </p>
         </motion.div>
@@ -137,11 +136,11 @@ export default function Testimonials() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -100 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="bg-gray-900/80 backdrop-blur-sm rounded-2xl p-8 md:p-10 shadow-xl border border-gray-700/50"
+              className="bg-white backdrop-blur-sm rounded-2xl p-8 md:p-10 shadow-xl border border-gray-200"
             >
               <div className="text-center">
                 {/* Quote Icon */}
-                <div className="w-12 h-12 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-[#31694E] to-[#658C58] rounded-full flex items-center justify-center mx-auto mb-6">
                   <Quote className="w-6 h-6 text-white" />
                 </div>
 
@@ -149,7 +148,7 @@ export default function Testimonials() {
                 <StarRating rating={TESTIMONIALS[currentIndex].rating} />
 
                 {/* Content */}
-                <p className="text-gray-200 text-lg md:text-xl leading-relaxed mb-8 font-medium italic">
+                <p className="text-gray-700 text-lg md:text-xl leading-relaxed mb-8 font-medium italic">
                   "{TESTIMONIALS[currentIndex].feedback}"
                 </p>
 
@@ -158,13 +157,13 @@ export default function Testimonials() {
                   <img
                     src={TESTIMONIALS[currentIndex].avatar}
                     alt={TESTIMONIALS[currentIndex].name}
-                    className="w-14 h-14 rounded-full object-cover border-2 border-violet-500 shadow-lg"
+                    className="w-14 h-14 rounded-full object-cover border-2 border-[#658C58] shadow-lg"
                   />
                   <div className="text-left">
-                    <h3 className="font-bold text-white text-lg">
+                    <h3 className="font-bold text-gray-900 text-lg">
                       {TESTIMONIALS[currentIndex].name}
                     </h3>
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-gray-500 text-sm">
                       {TESTIMONIALS[currentIndex].location}
                     </p>
                   </div>
@@ -181,8 +180,8 @@ export default function Testimonials() {
                 onClick={() => setCurrentIndex(index)}
                 className={`transition-all duration-300 rounded-full ${
                   index === currentIndex 
-                    ? "w-8 bg-gradient-to-r from-violet-500 to-purple-500 shadow-lg" 
-                    : "w-2 bg-gray-600 hover:bg-gray-500"
+                    ? "w-8 bg-gradient-to-r from-[#31694E] to-[#658C58] shadow-lg" 
+                    : "w-2 bg-gray-300 hover:bg-gray-400"
                 } h-2`}
                 aria-label={`View testimonial ${index + 1}`}
               />
@@ -193,7 +192,7 @@ export default function Testimonials() {
           <div className="flex justify-center mt-6 gap-4">
             <button
               onClick={prevTestimonial}
-              className="p-3 rounded-full bg-gray-700 hover:bg-gray-600 text-white transition-all duration-300 hover:scale-110"
+              className="p-3 rounded-full bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 transition-all duration-300 hover:scale-110 shadow-sm"
               aria-label="Previous testimonial"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -202,7 +201,7 @@ export default function Testimonials() {
             </button>
             <button
               onClick={nextTestimonial}
-              className="p-3 rounded-full bg-gray-700 hover:bg-gray-600 text-white transition-all duration-300 hover:scale-110"
+              className="p-3 rounded-full bg-white hover:bg-gray-100 text-gray-700 border border-gray-300 transition-all duration-300 hover:scale-110 shadow-sm"
               aria-label="Next testimonial"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -229,16 +228,16 @@ export default function Testimonials() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">10K+</div>
-            <div className="text-gray-400">Happy Customers</div>
+            <div className="text-3xl md:text-4xl font-bold text-[#31694E] mb-2">10K+</div>
+            <div className="text-gray-600">Happy Customers</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">4.9/5</div>
-            <div className="text-gray-400">Average Rating</div>
+            <div className="text-3xl md:text-4xl font-bold text-[#31694E] mb-2">4.9/5</div>
+            <div className="text-gray-600">Average Rating</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl md:text-4xl font-bold text-white mb-2">98%</div>
-            <div className="text-gray-400">Recommend Us</div>
+            <div className="text-3xl md:text-4xl font-bold text-[#31694E] mb-2">98%</div>
+            <div className="text-gray-600">Recommend Us</div>
           </div>
         </motion.div>
       </div>

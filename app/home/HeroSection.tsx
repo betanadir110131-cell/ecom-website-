@@ -1,170 +1,173 @@
-// components/Hero/Hero.tsx
+// components/Hero/EnhancedHero.tsx
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Zap, TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, Play, TrendingUp, Shield, Zap, Headphones } from "lucide-react";
 
-export default function Hero() {
+export default function EnhancedHero() {
+  const [typedText, setTypedText] = useState("");
+  const texts = ["Innovation", "Performance", "Quality", "Excellence"];
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentText = texts[currentIndex];
+    
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (typedText.length < currentText.length) {
+          setTypedText(currentText.slice(0, typedText.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        if (typedText.length > 0) {
+          setTypedText(currentText.slice(0, typedText.length - 1));
+        } else {
+          setIsDeleting(false);
+          setCurrentIndex((prev) => (prev + 1) % texts.length);
+        }
+      }
+    }, isDeleting ? 50 : 100);
+
+    return () => clearTimeout(timeout);
+  }, [typedText, isDeleting, currentIndex]);
+
   return (
-    <section className="relative h-screen min-h-[600px] overflow-hidden bg-gray-900">
-      {/* Enhanced Background with Dark Theme */}
+    <section className="relative min-h-screen overflow-hidden bg-gradient-to-br from-white via-gray-50 to-[#F0E491]/20">
+      {/* Animated Background Elements */}
       <div className="absolute inset-0">
-        <img
-          src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1920&q=80&auto=format&fit=crop"
-          alt="Modern Tech Store"
-          className="w-full h-full object-cover"
-          loading="eager"
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900/80 via-purple-900/60 to-violet-900/70" />
-        {/* Animated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-2 h-2 bg-violet-500 rounded-full"
-            animate={{
-              scale: [1, 2, 1],
-              opacity: [0.3, 0.7, 0.3],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute top-1/3 right-1/3 w-1 h-1 bg-blue-500 rounded-full"
-            animate={{
-              scale: [1, 3, 1],
-              opacity: [0.2, 0.5, 0.2],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 1,
-            }}
-          />
-        </div>
+        <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-[#31694E]/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#BBC863]/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10 flex items-center justify-center h-full px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="text-center text-white max-w-6xl mx-auto"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        >
-          {/* Premium Badge */}
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Content */}
           <motion.div
-            className="inline-flex items-center gap-2 bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-full px-4 py-2 mb-6"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
           >
-            <Sparkles className="w-4 h-4 text-violet-400" />
-            <span className="text-sm font-medium text-gray-200">
-              Premium Tech Products
-            </span>
-            <TrendingUp className="w-4 h-4 text-green-400" />
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            Tech That
-            <motion.span
-              className="block bg-gradient-to-r from-violet-400 via-purple-400 to-fuchsia-400 bg-clip-text text-transparent mt-2"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-2 mb-6 shadow-lg"
             >
-              Powers Dreams
-            </motion.span>
-          </motion.h1>
+              <TrendingUp className="w-4 h-4 text-[#31694E]" />
+              <span className="text-sm font-medium text-gray-700">
+                🚀 #1 Tech Store of 2024
+              </span>
+            </motion.div>
 
-          {/* Subtitle */}
-          <motion.p
-            className="text-lg sm:text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.7, duration: 0.8 }}
-          >
-            Discover cutting-edge technology, premium quality gadgets, and 
-            unbeatable prices. Elevate your digital lifestyle with our curated collection.
-          </motion.p>
+            {/* Main Heading */}
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Tech That
+              <span className="block bg-gradient-to-r from-[#31694E] via-[#658C58] to-[#BBC863] bg-clip-text text-transparent min-h-[1.2em]">
+                {typedText}|
+              </span>
+            </h1>
 
-          {/* Features Grid */}
-          
-          {/* CTA Buttons */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
-          >
-            <motion.a
-              href="/shop/new"
-              whileHover={{ 
-                scale: 1.05,
-                boxShadow: "0 20px 40px -10px rgba(139, 92, 246, 0.4)"
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-2xl transition-all duration-300 min-w-[160px] group"
-            >
-              <Zap className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Shop Now
-            </motion.a>
-            
-            <motion.a
-              href="/shop/collections"
-              whileHover={{ 
-                scale: 1.05,
-                backgroundColor: "rgba(255, 255, 255, 0.1)"
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center gap-2 border-2 border-gray-600 hover:border-gray-400 text-white px-8 py-4 rounded-xl font-semibold text-lg backdrop-blur-sm transition-all duration-300 min-w-[160px] group"
-            >
-              <Sparkles className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Explore
-            </motion.a>
-          </motion.div>
+            {/* Subtitle */}
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-lg">
+              Discover cutting-edge gadgets, premium electronics, and innovative tech solutions. 
+              Free shipping • 2-year warranty • 24/7 support
+            </p>
 
-          {/* Stats */}
-          <motion.div
-            className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-700/50 max-w-md mx-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.3, duration: 0.8 }}
-          >
-            {[
-              { number: "10K+", label: "Products" },
-              { number: "50K+", label: "Customers" },
-              { number: "4.9/5", label: "Rating" },
-            ].map((stat, index) => (
-              <div key={stat.label} className="text-center">
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 mb-12">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center justify-center gap-3 bg-[#31694E] hover:bg-[#658C58] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg transition-all duration-300 group"
+              >
+                Shop Latest Tech
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.button>
+              
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center justify-center gap-3 border-2 border-[#31694E] text-[#31694E] hover:bg-[#31694E] hover:text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 group"
+              >
+                <Play className="w-5 h-5" />
+                Watch Demo
+              </motion.button>
+            </div>
+
+            {/* Features */}
+            <div className="grid grid-cols-3 gap-6">
+              {[
+                { icon: Shield, label: "2-Year Warranty" },
+                { icon: Zap, label: "Fast Shipping" },
+                { icon: Headphones, label: "24/7 Support" },
+              ].map((feature, index) => (
                 <motion.div
-                  className="text-2xl font-bold text-white mb-1"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 1.5 + index * 0.1, duration: 0.5 }}
+                  key={feature.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.6 + index * 0.1 }}
+                  className="flex items-center gap-2 text-sm text-gray-600"
                 >
-                  {stat.number}
+                  <feature.icon className="w-4 h-4 text-[#31694E]" />
+                  <span>{feature.label}</span>
                 </motion.div>
-                <div className="text-xs text-gray-400 uppercase tracking-wider">
-                  {stat.label}
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Hero Product Showcase */}
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="relative bg-white rounded-2xl p-8 shadow-2xl border border-gray-200">
+              {/* Featured Product */}
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#31694E] to-[#658C58] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Zap className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Latest Gaming Laptop</h3>
+                <p className="text-gray-600 mb-4">RTX 4080 • 32GB RAM • 2TB SSD</p>
+                <div className="flex justify-center items-center gap-2">
+                  <span className="text-2xl font-bold text-[#31694E]">$2,499</span>
+                  <span className="text-sm text-gray-500 line-through">$2,999</span>
+                  <span className="text-sm bg-[#F0E491] text-gray-900 px-2 py-1 rounded">Save $500</span>
                 </div>
               </div>
-            ))}
-          </motion.div>
-        </motion.div>
-      </div>
+              
+              {/* Product Image */}
+              <div className="relative h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl overflow-hidden mb-6">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-32 h-32 bg-gradient-to-br from-[#31694E] to-[#658C58] rounded-lg transform rotate-12 opacity-20" />
+                  <div className="absolute text-6xl">💻</div>
+                </div>
+              </div>
 
-      {/* Enhanced Scroll Indicator */}
-      
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-lg font-bold text-gray-900">4.9/5</div>
+                  <div className="text-xs text-gray-500">Rating</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">2.3K</div>
+                  <div className="text-xs text-gray-500">Sold</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold text-gray-900">98%</div>
+                  <div className="text-xs text-gray-500">Recommended</div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

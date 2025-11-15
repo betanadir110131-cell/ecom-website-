@@ -1,4 +1,4 @@
-import { Category } from '@/components/data/products';
+import { Category } from '@/components/data_products/products';
 
 
 export const CATEGORIES: Category[] = [

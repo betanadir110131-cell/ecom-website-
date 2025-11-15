@@ -1,47 +1,5 @@
 @import "tailwindcss";
 
-/* Color Theme Variables */
-:root {
-  /* Main Colors */
-  --color-primary: #111827; /* gray-900 */
-  --color-secondary: #a78bfa; /* violet-400 */
-  --color-accent: #3b82f6; /* blue-500 */
-  
-  /* Text Colors */
-  --color-text-primary: #d1d5db; /* gray-300 */
-  --color-text-secondary: #9ca3af; /* gray-400 */
-  --color-text-dark: #374151; /* gray-700 */
-  
-  /* Background Colors */
-  --color-bg-primary: #111827; /* gray-900 */
-  --color-bg-secondary: #1f2937; /* gray-800 */
-  --color-bg-light: #f9fafb; /* gray-50 */
-  
-  /* Border Colors */
-  --color-border-primary: #374151; /* gray-700 */
-  --color-border-secondary: #4b5563; /* gray-600 */
-}
-
-/* Custom Theme Classes */
-.bg-primary {
-  background-color: var(--color-primary);
-}
-
-.bg-secondary {
-  background-color: var(--color-secondary);
-}
-
-.text-primary {
-  color: var(--color-text-primary);
-}
-
-.text-secondary {
-  color: var(--color-text-secondary);
-}
-
-.border-primary {
-  border-color: var(--color-border-primary);
-}
 
 /* Animation Keyframes */
 @keyframes kenburns {

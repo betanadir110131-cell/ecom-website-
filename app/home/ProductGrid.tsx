@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { ProductCard } from "./ProductCard";
-import { Product, allProducts } from "@/components/data/products";
+import { Product, allProducts } from "../../components/data_products/products";
 import Link from "next/link";
 
 interface ProductGridProps {
@@ -93,8 +93,8 @@ export function ProductGrid({
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-white mb-2">Our Products</h1>
-          <p className="text-gray-400">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Products</h1>
+          <p className="text-gray-600">
             Showing {currentProducts.length} of {filteredProducts.length}{" "}
             products
           </p>
@@ -106,7 +106,7 @@ export function ProductGrid({
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#658C58] shadow-sm"
             >
               {categories.map((category) => (
                 <option key={category} value={category}>
@@ -120,7 +120,7 @@ export function ProductGrid({
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="bg-gray-800 border border-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-violet-500"
+              className="bg-white border border-gray-300 text-gray-900 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#658C58] shadow-sm"
             >
               <option value="featured">Featured</option>
               <option value="price-low">Price: Low to High</option>
@@ -166,11 +166,11 @@ export function ProductGrid({
       {/* Empty State */}
       {currentProducts.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-gray-500 text-6xl mb-4">😔</div>
-          <h3 className="text-xl font-semibold text-white mb-2">
+          <div className="text-gray-400 text-6xl mb-4">😔</div>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
             No products found
           </h3>
-          <p className="text-gray-400">
+          <p className="text-gray-600">
             Try adjusting your filters or search terms.
           </p>
         </div>
@@ -182,7 +182,7 @@ export function ProductGrid({
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors shadow-sm"
           >
             Previous
           </button>
@@ -198,10 +198,11 @@ export function ProductGrid({
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`px-4 py-2 rounded-lg transition-colors ${currentPage === page
-                      ? "bg-violet-600 text-white"
-                      : "bg-gray-800 text-white hover:bg-gray-700"
-                    }`}
+                  className={`px-4 py-2 rounded-lg transition-colors border shadow-sm ${
+                    currentPage === page
+                      ? "bg-[#31694E] text-white border-[#31694E]"
+                      : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                  }`}
                 >
                   {page}
                 </button>
@@ -219,7 +220,7 @@ export function ProductGrid({
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className="px-4 py-2 bg-gray-800 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700 transition-colors"
+            className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 transition-colors shadow-sm"
           >
             Next
           </button>
