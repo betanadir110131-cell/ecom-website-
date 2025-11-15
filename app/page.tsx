@@ -9,6 +9,7 @@ import StatsSection from "./home/StatsSection";
 import BlogSection from "./home/BlogSection";
 import Partners from "./home/Partners";
 
+
 export default function EcommerceHomepage() {
   
   return (
@@ -19,6 +20,7 @@ export default function EcommerceHomepage() {
       <TechShowcase/>
       <Testimonials/>
       <NewsletterSection/>
+      
       <StatsSection/>
       <BlogSection/>
       <Partners/>

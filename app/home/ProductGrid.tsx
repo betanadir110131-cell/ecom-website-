@@ -10,12 +10,20 @@ interface ProductGridProps {
   products?: Product[];
   itemsPerPage?: number;
   showFilters?: boolean;
+  // Add the missing props
+  variant?: string;
+  title?: string;
+  description?: string;
 }
 
 export function ProductGrid({
-  products = allProducts, // ✅ Use your real product data here
+  products = allProducts,
   itemsPerPage = 12,
   showFilters = true,
+  // New props with default values
+  variant = "default",
+  title,
+  description,
 }: ProductGridProps) {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
   const [currentPage, setCurrentPage] = useState(1);
@@ -90,13 +98,15 @@ export function ProductGrid({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
+      {/* Header with new title and description props */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Our Products</h1>
+          {/* Use custom title if provided, otherwise default */}
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {title || "Our Products"}
+          </h1>
           <p className="text-gray-600">
-            Showing {currentProducts.length} of {filteredProducts.length}{" "}
-            products
+            {description || `Showing ${currentProducts.length} of ${filteredProducts.length} products`}
           </p>
         </div>
 
@@ -132,17 +142,15 @@ export function ProductGrid({
         )}
       </div>
 
-      {/* ✅ Products Grid (Fully Clickable Cards) */}
+      {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
         {currentProducts.map((product, index) => (
           <div key={product.id} className="relative group hover:scale-[1.02] transition-transform">
-            {/* Clickable overlay link */}
             <Link
               href={`/product/${product.id}`}
               className="absolute inset-0 z-10"
               aria-label={`View ${product.name}`}
             />
-            {/* Product Card (Buttons remain functional) */}
             <div className="relative z-20">
               <ProductCard
                 product={product}
